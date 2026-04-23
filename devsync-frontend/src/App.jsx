@@ -1,20 +1,26 @@
 import { useState } from "react";
 
-function App() {
+Function App() {
+  // ✅ STATES (top section)
   const [repo, setRepo] = useState("");
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchRepo = () => {
-    // (fake backend response)
-    const fakeData = {
-      name: "react",
-      stargazers_count: 210000,
-      forks_count: 45000,
-    };
+    setLoading(true);
 
-    setData(fakeData);
+    setTimeout(() => {
+      const fakeData = {
+        name: "react",
+        stargazers_count: 210000,
+        forks_count: 45000,
+      };
+
+      setData(fakeData);
+      setLoading(false);
+    }, 1000);
   };
-
+  const [loading, setLoading] = useState(false);
   return (
   <div style={{ padding: "20px" }}>
     <h1>DevSync 🚀</h1>
