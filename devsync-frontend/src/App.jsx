@@ -1,0 +1,53 @@
+import { useState } from "react";
+
+function App() {
+  const [repo, setRepo] = useState("");
+  const [data, setData] = useState(null);
+
+  const fetchRepo = () => {
+    // (fake backend response)
+    const fakeData = {
+      name: "react",
+      stargazers_count: 210000,
+      forks_count: 45000,
+    };
+
+    setData(fakeData);
+  };
+
+  return (
+  <div style={{ padding: "20px" }}>
+    <h1>DevSync 🚀</h1>
+
+    <div style={{ marginBottom: "20px" }}>
+      <input
+        type="text"
+        placeholder="Enter repo (e.g. facebook/react)"
+        value={repo}
+        onChange={(e) => setRepo(e.target.value)}
+        style={{ padding: "10px", borderRadius: "8px", marginRight: "10px" }}
+      />
+
+      <button onClick={fetchRepo}>
+        Fetch Data
+      </button>
+    </div>
+
+    {data && (
+      <div style={{
+        background: "#1e1e2f",
+        padding: "20px",
+        borderRadius: "12px",
+        width: "300px",
+        margin: "auto"
+      }}>
+        <h2>{data.name}</h2>
+        <p>⭐ Stars: {data.stargazers_count}</p>
+        <p>🍴 Forks: {data.forks_count}</p>
+      </div>
+    )}
+  </div>
+);
+}
+
+export default App;
