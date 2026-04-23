@@ -23,6 +23,15 @@ app.get('/repo', async (req, res) => {
   }
 });
 
+app.get('/contributors', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.github.com/repos/facebook/react/contributors');
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch contributors' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
