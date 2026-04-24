@@ -7,21 +7,22 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   // ✅ FUNCTION
-  const fetchRepo = () => {
-    setLoading(true);
+  const fetchRepo = async () => {
+  setLoading(true);
 
-    setTimeout(() => {
-      const fakeData = {
-        name: "react",
-        stargazers_count: 210000,
-        forks_count: 45000,
-      };
+  try {
+    const [owner, repoName] = repo.split("/");
 
-      setData(fakeData);
-      setLoading(false);
-    }, 1000);
-  };
+    const res = await fetch(`http://localhost:5000/repo`);
+    const data = await res.json();
 
+    setRepos((prev) => [...prev, data]);
+  } catch (err) {
+    console.log(err);
+  }
+
+  setLoading(false);
+};
   // ✅ UI
   return (
     <div style={{ padding: "20px" }}>
