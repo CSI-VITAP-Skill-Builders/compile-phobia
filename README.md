@@ -1,86 +1,100 @@
 # Compile Phobia Latest
 
-Integrated full-stack project with:
-- Backend: Node.js + Express API
-- Frontend: React + Vite dashboard
+Full-stack GitHub analytics project built with:
+- Backend: Node.js + Express
+- Frontend: React + Vite
 - Data source: GitHub REST API
 
-## Folder Structure
-
-- backend
-- devsync-frontend
-
-## What Works
-
-- Fetch repository details for any public repo using owner/repo format
-- Fetch GitHub profile details from a profile URL or username
-- Fetch top contributors and recent commits
-- Frontend and backend integrated through Vite proxy
-- Backend routes support both default and dynamic owner/repo usage
-- Backend can resolve repo and profile inputs through one endpoint
-
-## Backend API
-
-Base URL in local development: http://localhost:5000
-
-Routes:
-- GET /
-- GET /health
-- GET /resolve
-- GET /repo
-- GET /repo/:owner/:repo
-- GET /contributors
-- GET /contributors/:owner/:repo
-- GET /commits
-- GET /commits/:owner/:repo
-- GET /dashboard/:owner/:repo
-
-Notes:
-- Default routes use facebook/react when owner/repo is not provided.
-- Dynamic routes return 404 for missing repos and 429 for GitHub rate limit responses.
-- /resolve accepts a full GitHub URL, a repo path, a profile URL, or a username.
+The app supports both:
+- Repository input like `facebook/react`
+- GitHub profile input like `https://github.com/Sathvik2005`
 
 ## Run Locally
 
-### 1) Start backend
+### Backend
 
-- cd backend
-- npm install
-- npm run dev
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-Backend runs on http://localhost:5000
+Backend runs on `http://localhost:5000`.
 
-### 2) Start frontend
+### Frontend
 
-- cd devsync-frontend
-- npm install
-- npm run dev
+```bash
+cd devsync-frontend
+npm install
+npm run dev
+```
 
-Frontend runs on http://localhost:5173
+Frontend runs on `http://localhost:5173`.
 
-## Integration Details
+### Production build
 
-Frontend uses /api prefixed routes. Vite proxies /api to backend at http://localhost:5000.
+```bash
+cd devsync-frontend
+npm run build
+```
 
-Examples used by frontend:
-- /api/resolve?input=https://github.com/Sathvik2005
-- /api/repo/facebook/react
-- /api/contributors/facebook/react
-- /api/commits/facebook/react
+## Frontend Integration
 
-## Optional Environment Variables
+The frontend accepts a GitHub repo path, repo URL, profile URL, or username and calls the backend through Vite proxy at `/api`.
+
+## Backend Endpoints
+
+### Input resolution
+- `GET /resolve`
+
+### Repository info and analytics
+- `GET /repo-info`
+- `GET /contributors`
+- `GET /contributors-analysis`
+- `GET /commits`
+- `GET /commit-frequency`
+- `GET /commit-quality`
+- `GET /burst-activity`
+- `GET /repo-health`
+- `GET /issues`
+- `GET /leaderboard`
+- `GET /inactive-contributors`
+- `GET /contribution-distribution`
+- `GET /weekly-report`
+- `GET /file-activity`
+- `GET /pull-requests`
+- `GET /issue-resolution`
+- `GET /code-churn`
+- `GET /consistency-score`
+- `GET /peak-time`
+- `GET /module-ownership`
+- `GET /new-contributors`
+- `GET /trend`
+- `GET /issue-commit-link`
+- `GET /risk-analysis`
+- `GET /productivity`
+
+### Compatibility routes
+- `GET /repo`
+- `GET /repo/:owner/:repo`
+- `GET /contributors/:owner/:repo`
+- `GET /commits/:owner/:repo`
+- `GET /dashboard/:owner/:repo`
+- `GET /user/:username`
+- `GET /user/:username/repos`
+
+## Environment Variables
 
 Backend:
-- GITHUB_API (default: https://api.github.com)
+- `GITHUB_API` - optional GitHub API base URL
+- `GITHUB_TOKEN` or `GH_TOKEN` - optional token to reduce rate limiting
 
 Frontend:
-- VITE_API_BASE_URL (optional override, default: /api)
+- `VITE_API_BASE_URL` - optional backend base path, defaults to `/api`
 
-## Example Input
+## Notes
 
-In the frontend search box, enter:
-- facebook/react
-- microsoft/TypeScript
-- vercel/next.js
-- https://github.com/Sathvik2005
-- Sathvik2005
+- The backend defaults to `facebook/react` when no repo is provided.
+- Profile input returns user profile data and recent public repositories.
+- Repo analytics endpoints require repo input in `owner/repo` form or a GitHub repo URL.
+- The project is build-ready and can be deployed after setting the environment variables above.
