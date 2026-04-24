@@ -1,59 +1,91 @@
 import { useState } from "react";
 
 function App() {
-  // ✅ STATES
   const [repo, setRepo] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ FUNCTION
   const fetchRepo = async () => {
-  setLoading(true);
+    if (!repo.includes("/")) {
+      alert("Enter repo in format owner/repo");
+      return;
+    }
 
-  try {
-    const [owner, repoName] = repo.split("/");
+    setLoading(true);
 
-    const res = await fetch(`http://localhost:5000/repo`);
-    const data = await res.json();
+    try {
+      const [owner, repoName] = repo.split("/");
 
-    setRepos((prev) => [...prev, data]);
-  } catch (err) {
-    console.log(err);
-  }
+      const res = await fetch(
+        `http://localhost:5000/repo/${owner}/${repoName}`
+      );
+      const result = await res.json();
 
-  setLoading(false);
-};
-  // ✅ UI
+      setData(result);
+      setRepo(""); // clear input
+    } catch (err) {
+      alert("Failed to fetch repo");
+    }
+
+    setLoading(false);
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>DevSync 🚀</h1>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #667eea, #764ba2)",
+        color: "white",
+      }}
+    >
+      <h1 style={{ fontSize: "3rem", marginBottom: "20px" }}>
+        DevSync 🚀
+      </h1>
 
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
         <input
           type="text"
           placeholder="Enter repo (e.g. facebook/react)"
           value={repo}
           onChange={(e) => setRepo(e.target.value)}
-          style={{ padding: "10px", borderRadius: "8px", marginRight: "10px" }}
+          style={{
+            padding: "10px",
+            borderRadius: "8px",
+            border: "none",
+            width: "250px",
+          }}
         />
 
-        <button onClick={fetchRepo}>
-          Fetch Data
+        <button
+          onClick={fetchRepo}
+          style={{
+            padding: "10px 20px",
+            borderRadius: "8px",
+            border: "none",
+            background: "#ff7a18",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          Fetch
         </button>
       </div>
 
-      {/* 🔥 Loading state */}
       {loading && <p>Loading...</p>}
 
-      {/* 🔥 Data display */}
       {data && (
         <div
           style={{
-            background: "#1e1e2f",
+            background: "rgba(255,255,255,0.1)",
             padding: "20px",
             borderRadius: "12px",
+            backdropFilter: "blur(10px)",
             width: "300px",
-            margin: "auto",
+            textAlign: "center",
           }}
         >
           <h2>{data.name}</h2>
