@@ -1,5 +1,4 @@
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config();
 const axios = require('axios');
 
 const GITHUB_API = process.env.GITHUB_API || 'https://api.github.com';
@@ -21,7 +20,7 @@ const hasGithubToken = Boolean(GITHUB_TOKEN);
 
 const requestConfig = (params = {}) => ({
   params: {
-    per_page: 100,
+    per_page: 30,
     ...params,
   },
 });
@@ -80,22 +79,43 @@ const ensureUserInput = (username) => {
 const githubGet = async (path, params = {}) => {
   const cacheKey = `${path}?${JSON.stringify(params)}`;
   const cached = githubCache.get(cacheKey);
+
   if (cached && cached.expiresAt > Date.now()) {
     return cached.data;
   }
 
   try {
     const response = await githubClient.get(path, requestConfig(params));
+
     githubCache.set(cacheKey, {
       data: response.data,
       expiresAt: Date.now() + CACHE_TTL_MS,
     });
+
     return response.data;
+
   } catch (error) {
-    // If GitHub rate limits us, return stale cache when available.
-    if (error.response?.status === 403 && cached) {
+    const status = error.response?.status;
+
+    console.error(
+      "GitHub API Error:",
+      status,
+      error.response?.data || error.message
+    );
+  
+    if (status === 403 && cached) {
+      console.warn("⚠️ Rate limited. Using cached data.");
       return cached.data;
     }
+
+    if (status === 403) {
+      throw new Error("GitHub rate limit exceeded. Add token or wait.");
+    }
+
+    if (status === 404) {
+      throw new Error("Repository not found");
+    }
+
     throw error;
   }
 };
@@ -116,7 +136,7 @@ const fetchUserProfile = async (username) => githubGet(`/users/${encodeURICompon
 
 const fetchUserRepos = async (username) => githubGet(`/users/${encodeURIComponent(username)}/repos`, { sort: 'updated', per_page: 6 });
 
-const fetchCommitDetails = async (owner, repo, commits, limit = 20) => {
+const fetchCommitDetails = async (owner, repo, commits, limit = 10) => {
   const targetCommits = commits.slice(0, limit);
   const settled = await Promise.allSettled(
     targetCommits.map((commit) => githubGet(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commits/${commit.sha}`)),

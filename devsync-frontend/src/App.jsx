@@ -1,99 +1,130 @@
 import { useState } from "react";
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  BarChart, Bar
+} from "recharts";
+import { motion } from "framer-motion";
 import "./App.css";
 
 function App() {
   const [repo, setRepo] = useState("");
-  const [data, setData] = useState(null);
+  const [repoData, setRepoData] = useState(null);
+  const [freq, setFreq] = useState([]);
+  const [contributors, setContributors] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const fetchRepo = async () => {
-    if (!repo.includes("/")) {
-      setError("Use format: owner/repo");
-      return;
-    }
+    if (!repo.includes("/")) return alert("Use owner/repo");
 
     setLoading(true);
-    setError("");
-    setData(null);
 
     try {
       const [owner, repoName] = repo.split("/");
+      const base = "http://localhost:5000";
 
-      const res = await fetch(
-        `http://localhost:5000/dashboard/${owner}/${repoName}`
+      const repoRes = await fetch(`${base}/repo/${owner}/${repoName}`);
+      const freqRes = await fetch(`${base}/commit-frequency/${owner}/${repoName}`);
+      const contRes = await fetch(`${base}/contributors/${owner}/${repoName}`);
+
+      const repoJson = await repoRes.json();
+      const freqJson = await freqRes.json();
+      const contJson = await contRes.json();
+
+      setRepoData(repoJson);
+
+      setFreq(
+        Object.entries(freqJson.frequency).map(([date, count]) => ({
+          date,
+          count,
+        }))
       );
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Something went wrong");
-      }
-
-      setData(result);
-      setRepo("");
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
+      setContributors(
+        contJson.contributors.slice(0, 5).map((c) => ({
+          name: c.login,
+          commits: c.contributions,
+        }))
+      );
+    } catch {
+      alert("Error fetching repo");
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="app">
-      <h1 className="title">DevSync 🚀</h1>
-      <p className="subtitle">Analyze any GitHub repo like a pro</p>
+    <div className="container">
 
-      <div className="searchBox">
-        <input
-          type="text"
-          placeholder="facebook/react"
-          value={repo}
-          onChange={(e) => setRepo(e.target.value)}
-        />
-
-        <button onClick={fetchRepo} disabled={loading}>
-          {loading ? "Loading..." : "Fetch"}
-        </button>
+      {/* SIDEBAR */}
+      <div className="sidebar">
+        <h2>DevSync 🚀</h2>
+        <p>Analytics Dashboard</p>
       </div>
 
-      {error && <p className="error">{error}</p>}
+      {/* MAIN */}
+      <div className="main">
 
-      {data && (
-        <div className="dashboard">
-
-          {/* Repo Overview */}
-          <div className="card">
-            <h2>{data.repo.name}</h2>
-            <p>⭐ {data.repo.stars}</p>
-            <p>🍴 {data.repo.forks}</p>
-            <p className="desc">{data.repo.description}</p>
-          </div>
-
-          {/* Contributors */}
-          <div className="card">
-            <h3>Top Contributors</h3>
-            {data.contributors.slice(0, 5).map((c, i) => (
-              <div key={i} className="row">
-                <span>{c.login}</span>
-                <span>{c.contributions}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Commits */}
-          <div className="card">
-            <h3>Recent Commits</h3>
-            {data.commits.slice(0, 5).map((c, i) => (
-              <p key={i} className="commit">
-                {c.message}
-              </p>
-            ))}
-          </div>
-
+        {/* SEARCH */}
+        <div className="search">
+          <input
+            placeholder="facebook/react"
+            value={repo}
+            onChange={(e) => setRepo(e.target.value)}
+          />
+          <button onClick={fetchRepo}>
+            {loading ? "Loading..." : "Analyze"}
+          </button>
         </div>
-      )}
+
+        {/* DASHBOARD */}
+        {repoData && (
+          <div className="dashboard">
+
+            {/* STATS */}
+            <motion.div className="card" whileHover={{ scale: 1.05 }}>
+              <h3>⭐ Stars</h3>
+              <p>{repoData.stars}</p>
+            </motion.div>
+
+            <motion.div className="card" whileHover={{ scale: 1.05 }}>
+              <h3>🍴 Forks</h3>
+              <p>{repoData.forks}</p>
+            </motion.div>
+
+            <motion.div className="card" whileHover={{ scale: 1.05 }}>
+              <h3>📦 Repo</h3>
+              <p>{repoData.name}</p>
+            </motion.div>
+
+            {/* LINE CHART */}
+            <motion.div className="card large" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <h3>Commit Activity</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={freq}>
+                  <XAxis dataKey="date" hide />
+                  <YAxis />
+                  <Tooltip />
+                  <Line dataKey="count" stroke="#00e5ff" />
+                </LineChart>
+              </ResponsiveContainer>
+            </motion.div>
+
+            {/* BAR CHART */}
+            <motion.div className="card large">
+              <h3>Top Contributors</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={contributors}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="commits" fill="#ff7a18" />
+                </BarChart>
+              </ResponsiveContainer>
+            </motion.div>
+
+          </div>
+        )}
+      </div>
     </div>
   );
 }

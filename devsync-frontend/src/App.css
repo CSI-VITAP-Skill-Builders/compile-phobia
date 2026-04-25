@@ -1,104 +1,68 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0f172a;
   color: white;
 }
 
+/* LAYOUT */
+.container {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #020617;
+  padding: 20px;
+  border-right: 1px solid #1e293b;
+}
+
 /* MAIN */
-.app {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.title {
-  font-size: 3rem;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  opacity: 0.8;
-  margin-bottom: 30px;
+.main {
+  flex: 1;
+  padding: 30px;
 }
 
 /* SEARCH */
-.searchBox {
+.search {
   display: flex;
-  justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
 }
 
-.searchBox input {
+.search input {
   padding: 12px;
   border-radius: 10px;
   border: none;
   width: 250px;
-  outline: none;
 }
 
-.searchBox button {
+.search button {
   padding: 12px 20px;
   border-radius: 10px;
   border: none;
-  background: #ff7a18;
-  color: white;
-  cursor: pointer;
+  background: #00e5ff;
   font-weight: bold;
-}
-
-.searchBox button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* ERROR */
-.error {
-  color: #ffb3b3;
-  margin-bottom: 20px;
+  cursor: pointer;
 }
 
 /* DASHBOARD */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: 30px;
-  padding: 0 20px;
 }
 
-/* CARD */
+/* CARDS */
 .card {
-  background: rgba(255, 255, 255, 0.1);
+  background: #020617;
   padding: 20px;
   border-radius: 15px;
-  backdrop-filter: blur(10px);
-  text-align: left;
-  transition: 0.3s;
+  border: 1px solid #1e293b;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* TEXT */
-.big {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.desc {
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
-}
-
-.commit {
-  font-size: 0.85rem;
-  opacity: 0.8;
+.card.large {
+  grid-column: span 3;
 }
