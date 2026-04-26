@@ -14,6 +14,7 @@ function App() {
   const [health, setHealth] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [risk, setRisk] = useState(null);
 
   const fetchRepo = async () => {
     if (!repo.includes("/")) return alert("Use owner/repo");
@@ -29,13 +30,15 @@ function App() {
         freqRes,
         contRes,
         healthRes,
-        leaderRes
+        leaderRes,
+        riskRes
       ] = await Promise.all([
         fetch(`${base}/repo/${owner}/${repoName}`),
         fetch(`${base}/commit-frequency/${owner}/${repoName}`),
         fetch(`${base}/contributors/${owner}/${repoName}`),
         fetch(`${base}/repo-health/${owner}/${repoName}`),
         fetch(`${base}/leaderboard/${owner}/${repoName}`)
+        fetch(`${base}/risk-analysis/${owner}/${repoName}`)
       ]);
 
       const repoJson = await repoRes.json();
@@ -43,6 +46,8 @@ function App() {
       const contJson = await contRes.json();
       const healthJson = await healthRes.json();
       const leaderJson = await leaderRes.json();
+      const riskJson = await riskRes.json();
+      setRisk(riskJson);
 
       setRepoData(repoJson);
 
@@ -120,6 +125,11 @@ function App() {
             <motion.div className="card" whileHover={{ scale: 1.05 }}>
               <h3>🧠 Repo Health</h3>
               <p>{health?.score || "N/A"}</p>
+            </motion.div>
+            {/* RISK ANALYSIS */}
+            <motion.div className="card" whileHover={{ scale: 1.05 }}>
+              <h3>⚠️ Risk Level</h3>
+              <p>{risk?.level || "Low"}</p>
             </motion.div>
 
             {/* COMMIT ACTIVITY */}
