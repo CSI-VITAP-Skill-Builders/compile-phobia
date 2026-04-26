@@ -15,6 +15,7 @@ function App() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(false);
   const [risk, setRisk] = useState(null);
+  const [peak, setPeak] = useState(null);
 
   const fetchRepo = async () => {
     if (!repo.includes("/")) return alert("Use owner/repo");
@@ -48,6 +49,9 @@ function App() {
       const leaderJson = await leaderRes.json();
       const riskJson = await riskRes.json();
       setRisk(riskJson);
+      const peakRes = await fetch(`${base}/peak-time/${owner}/${repoName}`);
+      const peakData = await peakRes.json();
+      setPeak(peakData);
 
       setRepoData(repoJson);
 
@@ -126,6 +130,7 @@ function App() {
               <h3>🧠 Repo Health</h3>
               <p>{health?.score || "N/A"}</p>
             </motion.div>
+
             {/* RISK ANALYSIS */}
             <motion.div className="card" whileHover={{ scale: 1.05 }}>
               <h3>⚠️ Risk Level</h3>
@@ -143,6 +148,12 @@ function App() {
                   <Line dataKey="count" stroke="#00e5ff" />
                 </LineChart>
               </ResponsiveContainer>
+            </motion.div>
+
+            {/* PEAK TIME */}
+            <motion.div className="card">
+              <h3>⏰ Peak Activity</h3>
+              <p>{peak?.time || "N/A"}</p>
             </motion.div>
 
             {/* CONTRIBUTORS */}
@@ -171,6 +182,7 @@ function App() {
                 <p>No data</p>
               )}
             </motion.div>
+
 
           </div>
         )}
