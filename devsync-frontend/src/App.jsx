@@ -16,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [risk, setRisk] = useState(null);
   const [peak, setPeak] = useState(null);
+  const [productivity, setProductivity] = useState(null);
 
   const fetchRepo = async () => {
     if (!repo.includes("/")) return alert("Use owner/repo");
@@ -38,8 +39,10 @@ function App() {
         fetch(`${base}/commit-frequency/${owner}/${repoName}`),
         fetch(`${base}/contributors/${owner}/${repoName}`),
         fetch(`${base}/repo-health/${owner}/${repoName}`),
-        fetch(`${base}/leaderboard/${owner}/${repoName}`)
-        fetch(`${base}/risk-analysis/${owner}/${repoName}`)
+        fetch(`${base}/leaderboard/${owner}/${repoName}`),
+        fetch(`${base}/risk-analysis/${owner}/${repoName}`),
+        fetch(`${base}/peak-time/${owner}/${repoName}`),
+        fetch(`${base}/productivity/${owner}/${repoName}`)
       ]);
 
       const repoJson = await repoRes.json();
@@ -52,6 +55,9 @@ function App() {
       const peakRes = await fetch(`${base}/peak-time/${owner}/${repoName}`);
       const peakData = await peakRes.json();
       setPeak(peakData);
+      const prodRes = await fetch(`${base}/productivity/${owner}/${repoName}`);
+      const prodData = await prodRes.json();
+      setProductivity(prodData);
 
       setRepoData(repoJson);
 
@@ -154,6 +160,12 @@ function App() {
             <motion.div className="card">
               <h3>⏰ Peak Activity</h3>
               <p>{peak?.time || "N/A"}</p>
+            </motion.div>
+
+            {/* PRODUCTIVITY */}
+            <motion.div className="card">
+              <h3>🚀 Productivity</h3>
+              <p>{productivity?.score || "N/A"}</p>
             </motion.div>
 
             {/* CONTRIBUTORS */}
