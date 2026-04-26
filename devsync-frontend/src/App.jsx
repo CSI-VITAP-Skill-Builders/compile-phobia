@@ -25,7 +25,7 @@ function App() {
 
     try {
       const [owner, repoName] = repo.split("/");
-      const base = "http://localhost:5000";
+      const base = "https://compile-phobia.onrender.com";
 
       const [
         repoRes,
