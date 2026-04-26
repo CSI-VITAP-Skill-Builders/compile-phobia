@@ -11,6 +11,8 @@ function App() {
   const [repoData, setRepoData] = useState(null);
   const [freq, setFreq] = useState([]);
   const [contributors, setContributors] = useState([]);
+  const [health, setHealth] = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchRepo = async () => {
@@ -22,30 +24,48 @@ function App() {
       const [owner, repoName] = repo.split("/");
       const base = "http://localhost:5000";
 
-      const repoRes = await fetch(`${base}/repo/${owner}/${repoName}`);
-      const freqRes = await fetch(`${base}/commit-frequency/${owner}/${repoName}`);
-      const contRes = await fetch(`${base}/contributors/${owner}/${repoName}`);
+      const [
+        repoRes,
+        freqRes,
+        contRes,
+        healthRes,
+        leaderRes
+      ] = await Promise.all([
+        fetch(`${base}/repo/${owner}/${repoName}`),
+        fetch(`${base}/commit-frequency/${owner}/${repoName}`),
+        fetch(`${base}/contributors/${owner}/${repoName}`),
+        fetch(`${base}/repo-health/${owner}/${repoName}`),
+        fetch(`${base}/leaderboard/${owner}/${repoName}`)
+      ]);
 
       const repoJson = await repoRes.json();
       const freqJson = await freqRes.json();
       const contJson = await contRes.json();
+      const healthJson = await healthRes.json();
+      const leaderJson = await leaderRes.json();
 
       setRepoData(repoJson);
 
       setFreq(
-        Object.entries(freqJson.frequency).map(([date, count]) => ({
+        Object.entries(freqJson.frequency || {}).map(([date, count]) => ({
           date,
           count,
         }))
       );
 
       setContributors(
-        contJson.contributors.slice(0, 5).map((c) => ({
+        (contJson.contributors || []).slice(0, 5).map((c) => ({
           name: c.login,
           commits: c.contributions,
         }))
       );
-    } catch {
+
+      setHealth(healthJson);
+
+      setLeaderboard(leaderJson || []);
+
+    } catch (err) {
+      console.log(err);
       alert("Error fetching repo");
     }
 
@@ -80,7 +100,7 @@ function App() {
         {repoData && (
           <div className="dashboard">
 
-            {/* STATS */}
+            {/* BASIC STATS */}
             <motion.div className="card" whileHover={{ scale: 1.05 }}>
               <h3>⭐ Stars</h3>
               <p>{repoData.stars}</p>
@@ -96,9 +116,15 @@ function App() {
               <p>{repoData.name}</p>
             </motion.div>
 
-            {/* LINE CHART */}
+            {/* REPO HEALTH */}
+            <motion.div className="card" whileHover={{ scale: 1.05 }}>
+              <h3>🧠 Repo Health</h3>
+              <p>{health?.score || "N/A"}</p>
+            </motion.div>
+
+            {/* COMMIT ACTIVITY */}
             <motion.div className="card large" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h3>Commit Activity</h3>
+              <h3>📈 Commit Activity</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={freq}>
                   <XAxis dataKey="date" hide />
@@ -109,9 +135,9 @@ function App() {
               </ResponsiveContainer>
             </motion.div>
 
-            {/* BAR CHART */}
+            {/* CONTRIBUTORS */}
             <motion.div className="card large">
-              <h3>Top Contributors</h3>
+              <h3>👥 Top Contributors</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={contributors}>
                   <XAxis dataKey="name" />
@@ -120,6 +146,20 @@ function App() {
                   <Bar dataKey="commits" fill="#ff7a18" />
                 </BarChart>
               </ResponsiveContainer>
+            </motion.div>
+
+            {/* LEADERBOARD */}
+            <motion.div className="card large">
+              <h3>🏆 Leaderboard</h3>
+              {leaderboard.length > 0 ? (
+                leaderboard.slice(0, 5).map((c, i) => (
+                  <p key={i}>
+                    {i + 1}. {c.login || c.name} — {c.contributions || c.commits}
+                  </p>
+                ))
+              ) : (
+                <p>No data</p>
+              )}
             </motion.div>
 
           </div>
