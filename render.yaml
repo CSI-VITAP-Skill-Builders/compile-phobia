@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: compile-phobia-backend
+    runtime: node
+    startCommand: cd backend && npm install && npm start
+    buildCommand: cd backend && npm install
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: GITHUB_TOKEN
+        fromGroup: compile-phobia-env
+
+  - type: web
+    name: compile-phobia-frontend
+    runtime: node
+    startCommand: cd devsync-frontend && npm install && npm run build && npx serve -s dist -l 3000
+    buildCommand: cd devsync-frontend && npm install && npm run build
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: VITE_API_BASE_URL
+        fromGroup: compile-phobia-env
+
+envVarGroups:
+  - name: compile-phobia-env
+    envVars:
+      - key: GITHUB_TOKEN
+        scope: all
