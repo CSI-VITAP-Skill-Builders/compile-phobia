@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "buildCommand": "echo 'Backend is ready'",
+  "framework": "express",
+  "functions": {
+    "backend/server.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
+    }
+  ],
+  "env": {
+    "GITHUB_TOKEN": "@github_token",
+    "NODE_ENV": "production"
+  }
+}
