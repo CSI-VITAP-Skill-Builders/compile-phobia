@@ -1,24 +1,66 @@
 {
   "version": 2,
+  "projectSettings": {
+    "node": "20.x"
+  },
+  "buildCommand": "cd devsync-frontend && npm run build",
+  "outputDirectory": "devsync-frontend/dist",
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "env": {
+    "GITHUB_TOKEN": "@github_token",
+    "VITE_API_BASE_URL": "https://your-domain.vercel.app"
+  },
   "builds": [
     {
       "src": "devsync-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "distDir": "dist",
+        "buildCommand": "npm run build"
+      }
     },
     {
-      "src": "backend/package.json",
+      "src": "api/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "backend/server.js"
+      "dest": "/api",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
     },
     {
       "src": "/(.*)",
-      "dest": "devsync-frontend/dist/$1"
+      "dest": "devsync-frontend/dist/index.html"
     }
-  ]
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
 }

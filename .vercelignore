@@ -1,0 +1,54 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# Development
+.env.local
+.env.development
+.env.test
+
+# Build
+dist
+build
+.next
+out
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Testing
+test-features.js
+coverage
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Misc
+.env.example
+.vercelignore
