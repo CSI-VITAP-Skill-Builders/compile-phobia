@@ -9,9 +9,7 @@ services:
         value: production
       - key: PORT
         value: 5000
-      - key: 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
-# Optional override
-        fromGroup: compile-phobia-env
+      - fromGroup: compile-phobia-env
 
   - type: web
     name: compile-phobia-frontend
@@ -24,11 +22,11 @@ services:
       - key: PORT
         value: 3000
       - key: VITE_API_BASE_URL
-        fromGroup: compile-phobia-env
+        value: http://localhost:5000   # or your backend URL
+      - fromGroup: compile-phobia-env
 
 envVarGroups:
   - name: compile-phobia-env
     envVars:
-      - key: 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
-# Optional override
-        scope: all
+      - key: GITHUB_TOKEN
+        value: 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
