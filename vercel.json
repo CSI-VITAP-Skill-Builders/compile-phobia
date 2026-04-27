@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "projectSettings": {
-    "node": "20.x"
-  },
   "buildCommand": "cd devsync-frontend && npm run build",
   "outputDirectory": "devsync-frontend/dist",
   "public": true,
