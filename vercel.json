@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "cd devsync-frontend && npm run build",
-  "outputDirectory": "devsync-frontend/dist",
+  "outputDirectory": "devsync-frontend",
   "env": {
     "GITHUB_TOKEN": "@github_token",
     "VITE_API_BASE_URL": "@api_url"
