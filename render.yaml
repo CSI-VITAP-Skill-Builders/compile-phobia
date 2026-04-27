@@ -9,7 +9,8 @@ services:
         value: production
       - key: PORT
         value: 5000
-      - key: GITHUB_TOKEN
+      - key: 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
+# Optional override
         fromGroup: compile-phobia-env
 
   - type: web
@@ -28,5 +29,6 @@ services:
 envVarGroups:
   - name: compile-phobia-env
     envVars:
-      - key: GITHUB_TOKEN
+      - key: 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
+# Optional override
         scope: all
