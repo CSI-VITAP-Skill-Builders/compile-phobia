@@ -1,3 +1,5 @@
+require("dotenv").config();
+console.log("TOKEN:", process.env.GITHUB_TOKEN);
 const express = require('express');
 const cors = require('cors');
 
