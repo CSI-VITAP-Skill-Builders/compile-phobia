@@ -503,7 +503,7 @@ function App() {
           </section>
 
           <section className="card card-full">
-  <h3>📊 {selectedFeature.replace(/-/g, " ")}</h3>
+
 
   {featureLoading && <SkeletonLoader />}
 
