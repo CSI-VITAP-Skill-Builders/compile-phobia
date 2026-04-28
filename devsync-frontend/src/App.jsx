@@ -503,76 +503,82 @@ function App() {
           </section>
 
           <section className="card card-full">
-            <h3>📊 {selectedFeature.replace(/-/g, " ")}</h3>
-            {featureLoading && <SkeletonLoader />}
-            {!featureLoading && (
-              {selectedFeature === "repo-health" && featureData && !featureData.error && (
-  <section className="card card-full">
-    <h3>📊 Repository Health Dashboard</h3>
+  <h3>📊 {selectedFeature.replace(/-/g, " ")}</h3>
 
-    {/* 🔢 TOP STATS */}
-    <div className="stats">
-      <article>
-        <span>💯 Score</span>
-        <strong>{featureData.score}</strong>
-      </article>
-      <article>
-        <span>👥 Contributors</span>
-        <strong>{featureData.signals.contributor_count}</strong>
-      </article>
-      <article>
-        <span>⚠️ Issues</span>
-        <strong>{featureData.signals.open_issues}</strong>
-      </article>
-      <article>
-        <span>📅 Active Days</span>
-        <strong>{featureData.signals.active_days}</strong>
-      </article>
+  {featureLoading && <SkeletonLoader />}
+
+  {!featureLoading && selectedFeature === "repo-health" && featureData && !featureData.error && (
+    <div>
+      <h3>📊 Repository Health Dashboard</h3>
+
+      {/* 🔢 TOP STATS */}
+      <div className="stats">
+        <article>
+          <span>💯 Score</span>
+          <strong>{featureData.score}</strong>
+        </article>
+        <article>
+          <span>👥 Contributors</span>
+          <strong>{featureData.signals.contributor_count}</strong>
+        </article>
+        <article>
+          <span>⚠️ Issues</span>
+          <strong>{featureData.signals.open_issues}</strong>
+        </article>
+        <article>
+          <span>📅 Active Days</span>
+          <strong>{featureData.signals.active_days}</strong>
+        </article>
+      </div>
+
+      {/* 📊 BAR CHART */}
+      <div className="chart-container" style={{ height: "300px" }}>
+        <Bar
+          data={{
+            labels: Object.keys(featureData.breakdown),
+            datasets: [
+              {
+                label: "Health Metrics",
+                data: Object.values(featureData.breakdown),
+                backgroundColor: "#0f766e",
+              },
+            ],
+          }}
+          options={{ responsive: true, maintainAspectRatio: false }}
+        />
+      </div>
+
+      {/* 🥧 PIE CHART */}
+      <div className="chart-container" style={{ height: "250px", marginTop: "20px" }}>
+        <Pie
+          data={{
+            labels: ["Positive", "Penalties"],
+            datasets: [
+              {
+                data: [
+                  featureData.breakdown.contributor_score +
+                    featureData.breakdown.frequency_score +
+                    featureData.breakdown.consistency_score,
+                  featureData.breakdown.issue_penalty +
+                    featureData.breakdown.churn_penalty +
+                    featureData.breakdown.burst_penalty,
+                ],
+                backgroundColor: ["#10b981", "#ef4444"],
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
+  )}
 
-    {/* 📊 BAR CHART */}
-    <div className="chart-container" style={{ height: "300px" }}>
-      <Bar
-        data={{
-          labels: Object.keys(featureData.breakdown),
-          datasets: [
-            {
-              label: "Health Metrics",
-              data: Object.values(featureData.breakdown),
-              backgroundColor: "#0f766e",
-            },
-          ],
-        }}
-        options={{ responsive: true, maintainAspectRatio: false }}
-      />
-    </div>
-
-    {/* 🥧 PIE CHART */}
-    <div className="chart-container" style={{ height: "250px", marginTop: "20px" }}>
-      <Pie
-        data={{
-          labels: ["Positive", "Penalties"],
-          datasets: [
-            {
-              data: [
-                featureData.breakdown.contributor_score +
-                featureData.breakdown.frequency_score +
-                featureData.breakdown.consistency_score,
-
-                featureData.breakdown.issue_penalty +
-                featureData.breakdown.churn_penalty +
-                featureData.breakdown.burst_penalty,
-              ],
-              backgroundColor: ["#10b981", "#ef4444"],
-            },
-          ],
-        }}
-      />
-    </div>
-  </section>
-)}
-            )}
-          </section>
+  {/* 🔁 fallback for other features */}
+  {!featureLoading && selectedFeature !== "repo-health" && (
+    <pre className="json-display">
+      {JSON.stringify(featureData, null, 2)}
+    </pre>
+  )}
+</section>
 
           <section className="card card-full">
             <h3>👥 All Contributors ({contributors.length}+)</h3>

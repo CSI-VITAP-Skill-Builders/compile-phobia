@@ -822,15 +822,12 @@ html, body {
 .stats article:hover {
   transform: translateY(-4px) scale(1.03);
 }
-
 .stats article {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
-
 .stats article:hover {
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
-
   .quality-score-container {
     gap: 12px;
   }
