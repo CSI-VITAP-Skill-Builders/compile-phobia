@@ -69,24 +69,32 @@ Modern development teams struggle with:
 
 ---
 # Architecture
+flowchart LR
 
-```mermaid
-flowchart TD
+%% Client Layer
+A[User / Browser] --> B[React Frontend]
 
-A[User Browser] --> B[React Frontend (Vite)]
-B -->|API Calls| C[Express Backend (Node.js)]
+%% API Layer
+B -->|HTTP Requests (Axios)| C[Node.js + Express Backend]
 
-C --> D[GitHub API]
+%% Processing Layer
+C --> D[Analytics Engine]
 
-C --> E[Analytics Engine]
-E --> F[Repository Metrics]
-E --> G[Contributor Analysis]
-E --> H[Commit Analysis]
-E --> I[Risk & Health Scoring]
+%% External Services
+C --> E[GitHub API]
 
+%% Data Processing
+D --> F[Repository Metrics]
+D --> G[Contributor Analysis]
+D --> H[Commit Analysis]
+D --> I[Risk & Health Scoring]
+
+%% Optimization Layer
 C --> J[Cache Layer (Optional)]
 
+%% Response Flow
 C --> B
+B --> A
 
 ---
 
