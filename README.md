@@ -69,6 +69,8 @@ Modern development teams struggle with:
 
 ---
 # Architecture
+
+```mermaid
 flowchart TD
 
 A[User Browser] --> B[React Frontend (Vite)]
@@ -77,7 +79,7 @@ B -->|API Calls| C[Express Backend (Node.js)]
 C --> D[GitHub API]
 
 C --> E[Analytics Engine]
-E --> F[Repo Metrics]
+E --> F[Repository Metrics]
 E --> G[Contributor Analysis]
 E --> H[Commit Analysis]
 E --> I[Risk & Health Scoring]
@@ -86,11 +88,6 @@ C --> J[Cache Layer (Optional)]
 
 C --> B
 
-style A fill:#1e293b,color:#fff
-style B fill:#0f172a,color:#fff
-style C fill:#1d4ed8,color:#fff
-style D fill:#059669,color:#fff
-style E fill:#7c3aed,color:#fff
 ---
 
 ## Tech Stack
