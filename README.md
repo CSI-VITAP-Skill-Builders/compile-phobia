@@ -68,33 +68,6 @@ Modern development teams struggle with:
 **Notification System** - Real-time alerts for team activities **Deployment Support** - Cloud deployment guides
 
 ---
-# Architecture
-flowchart LR
-
-%% Client Layer
-A[User / Browser] --> B[React Frontend]
-
-%% API Layer
-B -->|HTTP Requests (Axios)| C[Node.js + Express Backend]
-
-%% Processing Layer
-C --> D[Analytics Engine]
-
-%% External Services
-C --> E[GitHub API]
-
-%% Data Processing
-D --> F[Repository Metrics]
-D --> G[Contributor Analysis]
-D --> H[Commit Analysis]
-D --> I[Risk & Health Scoring]
-
-%% Optimization Layer
-C --> J[Cache Layer (Optional)]
-
-%% Response Flow
-C --> B
-B --> A
 
 ---
 
