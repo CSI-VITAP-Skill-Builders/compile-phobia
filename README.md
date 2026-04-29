@@ -17,7 +17,6 @@
 
 - [Problem Statement](#problem-statement)
 - [Features](#features)
-- [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Installation & Setup](#installation--setup)
@@ -331,10 +330,10 @@ All PRs must follow this format:
 
 ##  Team
 
-| Developer | Role | Focus |
-|-----------|------|-------|
-| **Sathvik** |
-| **Nikita** |
+
+ -**Sathvik** 
+ 
+ -**Nikita** 
 
 ---
 
