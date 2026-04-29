@@ -1,118 +1,92 @@
-#  DevSync - Smart Project Collaboration Platform
+#  DevSync #  Compile Phobia – GitHub Intelligence Dashboard
 
-> A modern full-stack MERN application that enables seamless project collaboration, repository tracking, and team synchronization.
->It provides comprehensive GitHub repository analytics, contributor insights, and code intelligence using structured metrics and visualizations.
+A modern full-stack analytics platform that transforms GitHub repository data into actionable insights using interactive visualizations, contributor analysis, and code intelligence.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-active-success.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-
----
-#   Overview
-
->Compile Phobia transforms raw GitHub data into actionable insights. It helps developers, teams, and evaluators understand repository health, contributor behavior, and project risk through a unified analytics dashboard.
----
-
-##  Table of Contents
-
-- [Problem Statement](#problem-statement)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation & Setup](#installation--setup)
-- [API Documentation](#api-documentation)
-- [Contribution Guidelines](#contribution-guidelines)
-- [Future Improvements](#future-improvements)
-- [Team](#team)
-- [License](#license)
+🌐 **Live Demo:** https://github-dashboard-lime-delta.vercel.app/
+📦 **Repository:** https://github.com/CSI-VITAP-Skill-Builders/compile-phobia
 
 ---
 
-## Problem Statement
+##  Overview
 
-Modern development teams struggle with:
-- **Project Fragmentation**: Repositories scattered across multiple platforms
-- **Collaboration Overhead**: Difficulty tracking team contributions
-- **Information Gaps**: Limited visibility into project metrics
-- **Onboarding Challenges**: New team members struggle to understand project structure
+Compile Phobia helps developers, teams, and evaluators:
 
-**DevSync solves this** by providing a centralized dashboard where teams can:
-- View and track GitHub repositories in real-time
-- Monitor project statistics and team contributions
-- Access key metrics from a single interface
-- Collaborate efficiently without context switching
+* Understand repository health 
+* Analyze contributor behavior 
+* Track project trends 
+* Detect risks and inefficiencies 
+
+All in one clean, visual dashboard.
 
 ---
 
 ##  Features
 
-### Current Features (MVP - Day 1)
-**Express Backend Server** - Robust API for data management
-**React Dashboard** - Beautiful, responsive user interface with purple gradient design
-**GitHub API Integration** - Real-time repository data fetching
- **Error Handling** - Comprehensive error management and user feedback
-**CORS Support** - Seamless cross-origin communication
-**Responsive Design** - Works on desktop and tablet devices
- **Data Visualization** - Display repo metrics (stars, language, owner)
-**Refresh Functionality** - Manual data refresh with loading states
+###  Repository Health Dashboard
 
-### Planned Features (Future Sprints)
- **User Authentication** - JWT-based login system
- **Multiple Repositories** - Support for tracking multiple repos
- **Database Integration** - MongoDB for persistent data storage
- **User Profiles** - Team member management
- **Real-time Updates** - WebSocket integration
-**Advanced Analytics** - Commit history, contributor insights
+* Score-based evaluation system
+* Positive vs penalty analysis
+* Interactive charts (Bar + Pie)
 
-**Notification System** - Real-time alerts for team activities **Deployment Support** - Cloud deployment guides
+###  Contributor Insights
 
----
+* Top contributors visualization
+* Contribution distribution
+* Activity tracking
+
+###  Repository Analytics
+
+* Commit trends & activity
+* Code churn insights
+* Productivity indicators
+
+###  Smart Insights
+
+* Issue-based recommendations
+* Activity-based alerts
+* Project quality signals
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-| Technology | Purpose |
-|-----------|---------|
-| **React.js** | UI framework for interactive components |
-| **Axios** | HTTP client for API requests |
-| **CSS3** | Modern styling with gradients & animations |
-| **ES6+** | Modern JavaScript features |
+
+* React (Vite)
+* Chart.js
+* CSS3 (Responsive UI)
 
 ### Backend
-| Technology | Purpose |
-|-----------|---------|
-| **Node.js** | JavaScript runtime environment |
-| **Express.js** | Web framework for API routes |
-| **Axios** | HTTP client for external APIs |
-| **CORS** | Cross-origin resource sharing middleware |
 
-### APIs & Services
-| Service | Usage |
-|---------|-------|
-| **GitHub API** | Repository data and statistics |
+* Node.js
+* Express.js
+
+### APIs
+
+* GitHub REST API
+
+### Deployment
+
+* Frontend → Vercel
+* Backend → Render
 
 ---
 
-##  Project Structure
+## 📁 Project Structure
 
-```
+```bash
 compile-phobia/
 ├── backend/
 │   ├── server.js
 │   ├── githubAnalytics.js
 │   ├── package.json
 │   └── .env.example
-│
 ├── devsync-frontend/
 │   ├── src/
 │   ├── package.json
 │   ├── vite.config.js
 │   └── .env.example
-│
 ├── vercel.json
-├── package.json
 └── README.md
 ```
 
@@ -121,219 +95,165 @@ compile-phobia/
 ##  Installation & Setup
 
 ### Prerequisites
-- **Node.js** v14 or higher
-- **npm** v6 or higher (or yarn)
-- **Git** for version control
 
-### Quick Start (3 Minutes)
+* Node.js v14+
+* npm / yarn
+* Git
 
-**Terminal 1 - Backend:**
+---
+
+### 🔹 Backend Setup
+
 ```bash
 cd backend
 npm install
 npm start
 ```
-Expected output: ` Backend server is running on http://localhost:5000`
 
-**Terminal 2 - Frontend:**
+Expected:
+
 ```bash
-cd frontend
-npx create-react-app .
+Backend server running on http://localhost:5000
+```
+
+---
+
+###  Frontend Setup
+
+```bash
+cd devsync-frontend
 npm install
-npm start
+npm run dev
 ```
-Browser opens automatically at `http://localhost:3000`
 
-### Detailed Setup
+App runs at:
 
-#### Step 1: Clone & Navigate
 ```bash
-git clone https://github.com/YOUR_USERNAME/devsync.git
-cd devsync
+http://localhost:5173
 ```
 
-#### Step 2: Backend Setup
-```bash
-cd backend
+---
 
-# Install dependencies
-npm install
+###  Environment Variables
 
-# Start server
-npm start
+Create `.env` inside frontend:
+
+```env
+VITE_API_BASE_URL=https://compile-phobia.onrender.com
 ```
-
-**Verify Backend:**
-- Open http://localhost:5000/
-- Should see: `{"message": "Welcome to DevSync Backend!", "status": "Backend is running successfully"}`
-
-#### Step 3: Frontend Setup
-```bash
-cd ../frontend
-
-# Create React app structure
-npx create-react-app .
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-```
-
-**Verify Frontend:**
-- Browser opens automatically
-- Dashboard loads with purple gradient background
-- Repository data displays correctly
-
-#### Step 4: Test API Connection
-1. Open http://localhost:3000
-2. Dashboard loads with repository information
-3. Open DevTools (F12) → Console
-4. Should see: `Repository Data: {success: true, data: {...}}`
-5. Click "Refresh Data" to reload
 
 ---
 
 ##  API Documentation
 
 ### Base URLs
-| Service | URL |
-|---------|-----|
-| Backend API | `http://localhost:5000` |
-| Frontend App | `http://localhost:3000` |
 
-### Endpoints
+| Service        | URL                                 |
+| -------------- | ----------------------------------- |
+| Backend API    | http://localhost:5000               |
+| Production API | https://compile-phobia.onrender.com |
 
-#### 1. Welcome Endpoint
-```
-GET /
-```
-**Response:**
-```json
-{
-  "message": "Welcome to DevSync Backend!",
-  "status": "Backend is running successfully"
-}
+---
+
+### Example Endpoint
+
+```bash
+GET /resolve?input=facebook/react
 ```
 
-#### 2. Repository Data Endpoint
-```
-GET /repo
-```
-**Response:**
+Response:
+
 ```json
 {
   "success": true,
   "data": {
-    "name": "freeCodeCamp",
-    "owner": "freeCodeCamp",
-    "description": "The freeCodeCamp community...",
-    "stars": 397000,
-    "language": "JavaScript",
-    "url": "https://github.com/freeCodeCamp/freeCodeCamp"
+    "name": "facebook/react",
+    "stars": 307000
   }
 }
 ```
 
-**Error Response:**
-```json
-{
-  "success": false,
-  "message": "Error fetching repository data",
-  "error": "Error details here"
-}
+---
+
+##  Example Use Case
+
+Input:
+
+```bash
+facebook/react
+```
+
+Output:
+
+* Repository health score
+* Contributor insights
+* Activity metrics
+* Visual analytics dashboard
+
+---
+
+##  GitHub Workflow
+
+1. Create a branch
+
+```bash
+git checkout -b feature/task-name
+```
+
+2. Make changes & commit
+
+```bash
+git commit -m "[feature] add analytics chart"
+```
+
+3. Push & create PR
+
+```bash
+git push origin feature/task-name
 ```
 
 ---
 
 ##  Contribution Guidelines
 
-### Commit Convention
-All commits must follow this format:
+### Commit Format
+
 ```
 [type] short description
 ```
 
-**Allowed Types:**
-- `[feature]` - New feature
-- `[fix]` - Bug fix
-- `[perf]` - Performance improvement
-- `[refactor]` - Code refactoring
-- `[test]` - Test files
-- `[docs]` - Documentation
-- `[style]` - Styling changes
-- `[chore]` - Maintenance/setup
+### Allowed Types
 
-**Examples:**
-```
-[feature] add github api endpoint
-[fix] handle network errors in api calls
-[docs] update README with setup instructions
-[style] improve dashboard styling
-```
-
-### Pull Request Convention
-All PRs must follow this format:
-```
-[type] short description (difficulty)
-```
-
-**Difficulty Levels:**
-- `(easy)` - Simple changes, no dependencies
-- `(medium)` - Moderate changes, some dependencies
-- `(hard)` - Complex changes, multiple dependencies
-
-**Example:**
-```
-[feature] setup express server (easy)
-[feature] integrate frontend with backend api (medium)
-```
-
-### GitHub Workflow
-1. Create a branch: `git checkout -b feature/task-name`
-2. Make changes and commit: `git commit -m "[type] description"`
-3. Push to remote: `git push origin feature/task-name`
-4. Create Pull Request with proper title
-5. Wait for review and merge
-
-### Code Quality Standards
--  No console errors
--  Meaningful variable names
--  Comments for complex logic
--   Error handling implemented
--  Code tested locally before pushing
+* `[feature]` New feature
+* `[fix]` Bug fix
+* `[refactor]` Code improvement
+* `[docs]` Documentation
+* `[style]` UI changes
+* `[chore]` Maintenance
 
 ---
 
 ##  Future Improvements
 
-### Phase 2 (Next Sprint)
-- [ ] User authentication (JWT)
-- [ ] MongoDB database integration
-- [ ] User profile management
-- [ ] Multiple repository support
-
-### Phase 3 (Extended)
-- [ ] Real-time notifications
-- [ ] Advanced analytics dashboard
-- [ ] Webhook integrations
-- [ ] Team management features
-
-### Phase 4 (Production)
-- [ ] Cloud deployment (AWS/Azure)
-- [ ] Performance optimization
-- [ ] Security audits
-- [ ] Scalability improvements
+* User authentication (JWT)
+* Multi-repository comparison
+* Real-time analytics
+* AI-based insights 🤖
+* Performance optimization
 
 ---
 
-##  Team
+## 👥 Team
 
+* Sathvik
+* Nikita
 
- -**Sathvik** 
- 
- -**Nikita** 
+---
+
+## 💡 Why this Project?
+
+Most tools show raw GitHub data.
+**Compile Phobia converts it into insights**, helping developers make smarter decisions faster.
 
 ---
 
